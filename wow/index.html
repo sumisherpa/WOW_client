@@ -43,9 +43,9 @@
                         your laundry
                     	</h1><br>
                          <div class="search-container">
-                             <form action="/action_page.php">
-                                 <input type="text" placeholder="Enter a zipcode" id="search" name="search" pattern="[0-9]*" minlength="5" maxlength="5" title="Enter a valid number" required> &nbsp; &nbsp; 
-                                 <button type="submit" class="btn btn primary">Find laundromat</button>
+                             <form onsubmit="location.href='' + document.getElementById('myInput').value + '.html'; return false;">
+                                 <input type="text" placeholder="Enter a zipcode" id="myInput" name="search" pattern="[0-9]*" minlength="5" maxlength="5" title="Enter a valid number" required> &nbsp; &nbsp; 
+                                 <button type="submit"  class="btn btn primary">Find laundromat</button>
                              </form>
                         </div>
                     </td>

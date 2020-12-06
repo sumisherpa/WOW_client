@@ -1,3 +1,35 @@
+<?php
+session_start();
+
+include("connection.php")
+include("functions.php")
+
+
+if($_SERVER['REQUEST_METHOD'] == "POST")
+{
+	//Something was posted
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+
+	if(!empty($email) && !empty($password) && !is_numeric($email))
+	{
+	//save to database
+	$custID = (random_num(20);
+	$query = "insert into users (custID, email, password) values ('$custID', '$email', '$password')";
+
+	mysqli_query($con, $query);
+
+	header("location: login.php");
+	die;
+
+	}else
+	{
+		echo "Please enter some valid information!";
+	}
+}
+
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -47,7 +79,7 @@
         </form>
         <br>
           <p>Don't have an account?</p> 
-          <p>No worries, you can <a href="register.html" ><u>Register here</u></a>.</p>
+          <p>No worries, you can <a href="register.php" ><u>Register here</u></a>.</p>
      </div>
      
 
