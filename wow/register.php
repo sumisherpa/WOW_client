@@ -1,200 +1,379 @@
-<?php 
-	session_start();
-	require_once('./dbconfig/2.php');
-
-
-?>
 <!DOCTYPE html>
+
+ 
+
 <html>
+
+ 
+
 <head>
-	<title>Registration Form </title>
 
-	<meta charset="utf-8">
-	<title>WashonWheelsnyc: Register</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="wow.css">
-	<link href="https://fonts.googleapis.com/css?family=Maven+Pro|Poiret+One|Raleway|Roboto" rel="stylesheet">
-	<link rel="shortcut icon" type="image/png" href="images/logo2.png"/>
-	
-	
+ 
 
-	<?php 
-	$error_message = "";$success_message = "";
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	// Register user
-	if(isset($_POST['btn btn-primary'])){
-  	$fname = trim($_POST['fname']);
-	$lname  = trim($_POST['lname']);
-	$address1   =trim($_POST['address1']);
-	$address2   =trim($_POST['address2']);
-	$city      =  trim($_POST['city']);
-	$state     = trim($_POST['state']);
-	$zipcode       = trim ($_POST['zipcode']);
-	$country       = trim ($_POST['country']);
-	$fullName      = trim ($_POST['fullName']);
-	$creditNum       = trim($_POST['creditNum']);
-	$cvv      = trim($_POST['cvv']);
-	$phone    = trim($_POST['phone']);
-	$email     = trim($_POST['email']);
-	$password  = trim($_POST['password']);
-	$cpassword = trim($_POST['cpassword']);
-	
-	$isValid = true;
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 
-				 // Check fields are empty or not
-		   if($fname == '' || $lname == '' || $addres1 == '' || $addres2 == '' || $city == '' || $state == '' || $zipcode == '' || $country == '' || $fullName == '' || $creditNum == '' || $cvv == '' || $phone == '' || $email == '' || $password == '' || $cpassword == ''){
-			 $isValid = false;
-			 $error_message = "Please fill all fields.";
-		   }
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-		   // Check if confirm password matching or not
-		   if($isValid && ($password != $cpassword) ){
-			 $isValid = false;
-			 $error_message = "Confirm password not matching";
-		   }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-		   // Check if Email-ID is valid or not
-		   if ($isValid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			 $isValid = false;
-			 $error_message = "Invalid Email-ID.";
-		   }
+<link href="https://fonts.googleapis.com/css?family=Maven+Pro|Poiret+One|Raleway|Roboto" rel="stylesheet">
 
+<link rel="stylesheet" href="wow.css">
 
-			if($isValid){
-
-			// Check if Email-ID already exists
-			$stmt = $con->prepare("SELECT * FROM users WHERE email = ?");
-			$stmt->bind_param("s", $email);
-			$stmt->execute();
-			$result = $stmt->get_result();
-			$stmt->close();
-			if($result->num_rows > 0){
-				$isValid = false;
-				$error_message = "Email-ID is already existed.";
-			}
-			
-		}
-
-		// Insert records
-		   if($isValid){
-			 $insertSQL = "INSERT INTO users(fname,lname,address1, address2, city, state,zipcode, country, fullName, creditNum, cvv, phone, email, password ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			 $stmt = $con->prepare($insertSQL);
-			 $stmt->bind_param("ssss",$fname,$lname,$address1, $address2, $city, $state, $zipcode, $country, $fullName, $creditNum, $cvv, $phone, $email, $password);
-			 $stmt->execute();
-			 $stmt->close();
-
-			$success_message = "Account created successfully.";
-		}
-	}
-	?>
 </head>
+
+ 
+
 <body>
-	<div class='container'>
-		<div class='row'>
-			<div class='col-md-12'>
-				<h2></h2>
-			</div>
 
-			<div class='col-md-6' >
-					
-				<form method='post' action=''>
+    <div class="home-nav">
 
-					<h1>Sign Up</h1>
-					<?php 
-					// Display Error message
-					if(!empty($error_message)){
-					?>
-						<div class="alert alert-danger">
-						  	<strong>Error!</strong> <?= $error_message ?>
-						</div>
+        <a class="navbar-brand" href="index.html">
 
-					<?php
-					}
-					?>
+             <img src="images/logo.png" alt="logo">
 
-					<?php 
-					// Display Success message
-					if(!empty($success_message)){
-					?>
-						<div class="alert alert-success">
-						  	<strong>Success!</strong> <?= $success_message ?>
-						</div>
+        </a>
 
-					<?php
-					}
-					?>
-				
-					<div class="form-group">
-					    <label for="fname">First Name:</label>
-					    <input type="text" class="form-control" name="fname" id="fname" required="required" maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="lname">Last Name:</label>
-					    <input type="text" class="form-control" name="lname" id="lname" required="required" maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="address1">Address 1 :</label>
-					    <input type="text" class="form-control" name="address1" id="address1" required="required" 								maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="address2">Address 2 :</label>
-					    <input type="text" class="form-control" name="address2" id="address2" required="required" 								maxlength="80">
-					</div>
-						<div class="form-group">
-					    <label for="city">City :</label>
-					    <input type="text" class="form-control" name="city" id="city" required="required" 									maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="state">State :</label>
-					    <input type="text" class="form-control" name="state" id="state" required="required" maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="zipcode">Zip Code :</label>
-					    <input type="text" class="form-control" name="zipcode" id="zipcode" required="required" 						maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="country">Country :</label>
-					    <input type="text" class="form-control" name="country" id="country" required="required" 						maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="fullName">Name on Card :</label>
-					    <input type="text" class="form-control" name="fullName" id="fullName" required="required" 									maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="creditNum">Credit Card Number :</label>
-					    <input type="text" class="form-control" name="creditNum" id="creditNum" required="required" 									maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="cvv">Security Number :</label>
-					    <input type="text" class="form-control" name="cvv" id="cvv" required="required" 									maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="phone">Phone Number :</label>
-					    <input type="text" class="form-control" name="phone" id="phone" required="required" 									maxlength="80">
-					</div>
+   </div>
 
+     
 
+   <div id="navigation">
 
-					<div class="form-group">
-					    <label for="email">Email address:</label>
-					    <input type="email" class="form-control" name="email" id="email" required="required" maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="password">Password:</label>
-					    <input type="password" class="form-control" name="password" id="password" required="required" 					maxlength="80">
-					</div>
-					<div class="form-group">
-					    <label for="cpassword">Confirm Password:</label>
-					    <input type="password" class="form-control" name="cpassword" id="cpassword" required="required" 					maxlength="80">
-					</div>
-					
-					<button type="submit" name="btnsignup" class="btn btn-default">Submit</button>
-				</form>
-			</div>
-			
-			
-		</div>
-	</div>
+        <ul class="nav justify-content-center">
+
+             <li class="nav-item">
+
+                  <a class="nav-link" href="index.html">Home</a>
+
+             </li>
+
+             <li class="nav-item">
+
+                  <a class="nav-link" href="locations.html">About Us</a>
+
+             </li>
+
+             <li class="nav-item">
+
+                  <a class="nav-link" href="contact.html">Contact Us</a>
+
+             </li>
+
+       </ul>
+
+   </div>
+
+   <hr/>
+
+   <br/>
+
+    <h1>Responsive Checkout Form</h1>
+
+   <br/>
+
+<div class="row">
+
+ 
+
+  <div class="col-75">
+
+ 
+
+    <div class="container">
+
+ 
+
+      <form action="/action_page.php">
+
+ 
+
+        <div class="row">
+
+ 
+
+          <div class="col-50">
+
+ 
+
+            <h3>Billing Address</h3>
+
+ 
+
+            <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+
+ 
+
+            <input type="text" id="fname" name="firstname" placeholder="D. Nicius">
+
+ 
+
+            <label for="email"><i class="fa fa-envelope"></i> Email</label>
+
+ 
+
+            <input type="text" id="email" name="email" placeholder="dnicius@outlook.com">
+
+ 
+
+            <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+
+ 
+
+            <input type="text" id="adr" name="address" placeholder="999 Blvd">
+
+ 
+
+            <label for="city"><i class="fa fa-institution"></i> City</label>
+
+ 
+
+            <input type="text" id="city" name="city" placeholder="New York">
+
+ 
+
+ 
+
+            <div class="row">
+
+ 
+
+              <div class="col-50">
+
+ 
+
+                <label for="state">State</label>
+
+ 
+
+                <input type="text" id="state" name="state" placeholder="NY">
+
+ 
+
+              </div>
+
+ 
+
+              <div class="col-50">
+
+ 
+
+                <label for="zip">Zip</label>
+
+ 
+
+                <input type="text" id="zip" name="zip" placeholder="10001">
+
+ 
+
+              </div>
+
+ 
+
+            </div>
+
+ 
+
+          </div>
+
+ 
+
+ 
+
+          <div class="col-50">
+
+ 
+
+            <h3>Payment</h3>
+
+ 
+
+            <label for="fname">Accepted Cards</label>
+
+ 
+
+            <div class="icon-container">
+
+ 
+
+              <i class="fa fa-cc-visa" style="color:navy;"></i>
+
+ 
+
+              <i class="fa fa-cc-amex" style="color:blue;"></i>
+
+ 
+
+              <i class="fa fa-cc-mastercard" style="color:red;"></i>
+
+ 
+
+              <i class="fa fa-cc-discover" style="color:orange;"></i>
+
+ 
+
+            </div>
+
+ 
+
+            <label for="cname">Name on Card</label>
+
+ 
+
+            <input type="text" id="cname" name="cardname" placeholder="D. Nicius">
+
+ 
+
+            <label for="ccnum">Credit card number</label>
+
+ 
+
+            <input type="text" id="ccnum" name="cardnumber" placeholder="4111-1111-1111-1111">
+
+ 
+
+            <label for="expmonth">Exp Month</label>
+
+ 
+
+            <input type="text" id="expmonth" name="expmonth" placeholder="September">
+
+ 
+
+            <div class="row">
+
+ 
+
+              <div class="col-50">
+
+ 
+
+                <label for="expyear">Exp Year</label>
+
+ 
+
+                <input type="text" id="expyear" name="expyear" placeholder="2023">
+
+ 
+
+              </div>
+
+ 
+
+              <div class="col-50">
+
+ 
+
+                <label for="cvv">CVV</label>
+
+ 
+
+                <input type="text" id="cvv" name="cvv" placeholder="352">
+
+ 
+
+              </div>
+
+ 
+
+            </div>
+
+ 
+
+          </div>
+
+ 
+
+        
+
+ 
+
+        </div>
+
+ 
+
+        <label>
+
+ 
+
+          <input type="checkbox" checked="checked" name="sameadr"> Delivery address same as billing
+
+ 
+
+        </label>
+
+ 
+
+        <button type="submit" value="" class="btn btn-primary">Continue to checkout</button>
+
+ 
+
+      </form>
+
+ 
+
+    </div>
+
+ 
+
+  </div>
+
+ 
+
+  <div class="col-25">
+
+ 
+
+    <div class="container">
+
+ 
+
+      <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b>4</b></span></h4>
+
+ 
+
+      <p><a href="#">Product 1</a> <span class="price">$15</span></p>
+
+ 
+
+      <p><a href="#">Product 2</a> <span class="price">$5</span></p>
+
+ 
+
+      <p><a href="#">Product 3</a> <span class="price">$8</span></p>
+
+ 
+
+      <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+
+ 
+
+      <hr>
+
+ 
+
+      <p>Total <span class="price" style="color:black"><b>$30</b></span></p>
+
+ 
+
+    </div>
+
+ 
+
+  </div>
+
+ 
+
+</div>
+
+<footer>Copyright &copy; 2020</footer>
+
+ 
+
 </body>
+
+ 
+
 </html>
