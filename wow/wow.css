@@ -47,7 +47,7 @@ nav{
 }
 
 button {
-  margin-top: 100px;
+  margin-top: 10px;
   max-width: 100px;
   max-height: 30px;
   border-radius: 50px;
@@ -545,3 +545,14 @@ input[type='checkbox']{
 	}
 }
 		
+input {
+    max-width: 50%;
+    text-align: center;
+    display: inline-block;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
